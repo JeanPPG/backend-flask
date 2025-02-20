@@ -8,7 +8,7 @@ from datetime import datetime
 
 # Inicialización de la aplicación Flask y configuración CORS
 app = Flask(__name__)
-CORS(app, origins=["https://interfaces-proyecto-r-production.up.railway.app/"])
+CORS(app)
 
 
 # Configuración de la conexión a la base de datos PostgreSQL
