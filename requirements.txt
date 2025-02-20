@@ -1,0 +1,7 @@
+flask
+psycopg
+psycopg2
+psycopg-binary
+bcrypt
+PyJWT
+flask-cors
