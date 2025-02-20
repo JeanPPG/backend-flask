@@ -34,6 +34,9 @@ else:
 # =====================================================
 @app.route('/register', methods=['POST'])
 def register():
+    print("Solicitud recibida en /register")  # 🔴 Verifica que la ruta se ejecuta
+    data = request.get_json()
+    print("Datos recibidos:", data)  # 🔴 Muestra los datos que llegan
     data = request.get_json()
     email = data.get('email')
     password = data.get('password')
@@ -66,6 +69,9 @@ def register():
 # =====================================================
 @app.route('/login', methods=['POST'])
 def login():
+    print("Solicitud recibida en /login")  # 🔴 Verifica que la ruta se ejecuta
+    data = request.get_json()
+    print("Datos recibidos:", data)  # 🔴 Muestra los datos que llegan
     data = request.get_json()
     email = data.get('email')
     password = data.get('password')
