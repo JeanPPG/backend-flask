@@ -5,7 +5,7 @@ import bcrypt
 from flask_cors import CORS
 import json
 from datetime import datetime
-
+import os
 # Inicialización de la aplicación Flask y configuración CORS
 app = Flask(__name__)
 CORS(app)
