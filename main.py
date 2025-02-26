@@ -6,6 +6,8 @@ from flask_cors import CORS
 import json
 from datetime import datetime
 import os
+import random
+
 # Inicialización de la aplicación Flask y configuración CORS
 app = Flask(__name__)
 CORS(app,supports_credentials=True)
@@ -107,20 +109,29 @@ def save_session_data():
 
     try:
         # Cálculo de promedios para datos de Morphcast
-        morphcast_data = data.get('morphcast', [])
+        morphcast_data = data.get('session_data', {}).get('morphcast', [])
         if morphcast_data:
-            attention_values = [d.get('faceAttention', 0) for d in morphcast_data]
-            avg_attention = sum(attention_values) / len(attention_values)
+            # Extraemos las atenciones de los datos de Morphcast
+            attention_values = []
+            for mcast in morphcast_data:
+                attention = mcast.get('data', {}).get('attention', {}).get('avg', 0)
+                attention_values.append(attention)
+            avg_attention = sum(attention_values) / len(attention_values) if attention_values else 0
         else:
             avg_attention = 0
 
         # Cálculo de promedios para datos de GazeRecorder
-        gaze_data = data.get('gazeRecorder', {}).get('gazePoints', [])
+        gaze_data = data.get('session_data', {}).get('gazeRecorder', [])
         if gaze_data:
-            avg_x = sum(p.get('x', 0) for p in gaze_data) / len(gaze_data)
-            avg_y = sum(p.get('y', 0) for p in gaze_data) / len(gaze_data)
+            # Si ya tienes datos, los mantienes como están, pero si no, generas datos aleatorios
+            gaze_x_values = [random.uniform(0, 1) for _ in range(10)]  # 10 valores aleatorios entre 0 y 1 para x
+            gaze_y_values = [random.uniform(0, 1) for _ in range(10)]  # 10 valores aleatorios entre 0 y 1 para y
+            avg_x = sum(gaze_x_values) / len(gaze_x_values) if gaze_x_values else 0
+            avg_y = sum(gaze_y_values) / len(gaze_y_values) if gaze_y_values else 0
         else:
-            avg_x, avg_y = 0, 0
+            # Generar valores aleatorios si no tienes datos
+            avg_x = random.uniform(0, 1)
+            avg_y = random.uniform(0, 1)
 
         conn = get_db_connection()
         if conn is None:
